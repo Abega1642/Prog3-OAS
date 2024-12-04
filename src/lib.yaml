@@ -5,8 +5,78 @@ info:
 servers:
   - url: https://localhost
 paths:
-  /test:
+  /books:
     get:
+      operationId: getAll
+      tags:
+        - Books
+      summary: get all books available
+      parameters:
+        - $ref: "#/components/parameters/bookName"
+        - $ref: "#/components/parameters/releaseDate"
       responses:
-        '200':
-          description: OK
+        200:
+          description: list of all books or of a filtered book
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/book"
+
+components:
+  parameters:
+    bookName:
+      in: query
+      name: bookName
+      required: false
+      schema:
+        type: string
+        example: The mathematical principle of natural philosophy
+        description: Title of the book
+    releaseDate:
+        name: releaseDate
+        in: query
+        description: Start and end of release date interval (two values allowed)
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+            format: date
+            example: 1640-01-01,1740-12-31
+          minItems: 2
+          maxItems: 2
+  schemas:
+    author:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: "auth-sc1-028"
+          nullable: false
+        Name:
+          type: string
+          example: Isaac NEWTON
+        Sex:
+          type: string
+          enum: [M, F]
+    book:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: bk-sc1-phys-028
+          nullable: false
+        bookName:
+          type: string
+          example : The mathematical principle of natural philosophy
+        author:
+          $ref: "#/components/schemas/author"
+        pageNumbers:
+          type: integer
+          format: int32
+          example: 512
+        topic:
+          type: string
+          enum: [ROMANCE, COMEDY, OTHER]
