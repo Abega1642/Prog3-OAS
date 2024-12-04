@@ -23,6 +23,23 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/book"
+  /authors:
+    get:
+      operationId: getAll
+      tags:
+        - Authors
+      summary: get all books authors
+      parameters:
+        - $ref: "#/components/parameters/authorName"
+      responses:
+        200:
+          description: list of all authors or of a filtered author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/author"
 
 components:
   parameters:
@@ -34,6 +51,14 @@ components:
         type: string
         example: The mathematical principle of natural philosophy
         description: Title of the book
+    authorName:
+      in: query
+      name: authorName
+      required: false
+      schema:
+        type: string
+        example: Isaac Newton
+        description: Name of a book's author
     releaseDate:
         name: releaseDate
         in: query
