@@ -23,6 +23,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/book"
+  /book/add:
     post:
       operationId: addBook
       tags:
@@ -77,6 +78,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/author"
+  /author/add:
     post:
       operationId: addAuthor
       tags:
