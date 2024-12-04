@@ -40,13 +40,9 @@ components:
         description: Start and end of release date interval (two values allowed)
         required: false
         schema:
-          type: array
-          items:
-            type: string
-            format: date
-            example: 1640-01-01,1740-12-31
-          minItems: 2
-          maxItems: 2
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2};\d{4}-\d{2}-\d{2}$
+          example : 1710-11-12;1740-09-30
   schemas:
     author:
       type: object
