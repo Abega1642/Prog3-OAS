@@ -44,6 +44,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/book"
+    delete:
+      operationId: delete
+      tags:
+        - Books
+      summary: delete a book
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+      responses:
+        200:
+          description: book deleted with success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/book"
 
   /authors:
     get:
@@ -83,6 +97,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/author"
+    delete:
+      operationId: delete
+      tags:
+        - Authors
+      summary: delete an author
+      parameters:
+        - $ref: "#/components/parameters/authorId"
+      responses:
+        200:
+          description: author deleted with success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/author"
 
 components:
   parameters:
@@ -94,6 +122,20 @@ components:
         type: string
         example: The mathematical principle of natural philosophy
         description: Title of the book
+    bookId:
+      in: path
+      name: bookId
+      required: true
+      schema:
+        type: string
+        example: bk-sc1-phys-028
+    authorId:
+      in: path
+      name: authorId
+      required: true
+      schema:
+        type: string
+        example: auth-sc1-028
     authorName:
       in: query
       name: authorName
@@ -117,7 +159,7 @@ components:
       properties:
         ID:
           type: string
-          example: "auth-sc1-028"
+          example: auth-sc1-028
           nullable: false
         Name:
           type: string
