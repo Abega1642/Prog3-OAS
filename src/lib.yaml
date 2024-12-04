@@ -23,6 +23,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/book"
+    post:
+      operationId: addBook
+      tags:
+        - Books
+      summary: add a new book
+      requestBody:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/book"
+      responses:
+        200:
+          description: book created with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/book"
+
   /authors:
     get:
       operationId: getAll
@@ -34,6 +56,27 @@ paths:
       responses:
         200:
           description: list of all authors or of a filtered author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/author"
+    post:
+      operationId: addAuthor
+      tags:
+        - Authors
+      summary: add a new author
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/author"
+      responses:
+        200:
+          description: author added with success
           content:
             application/json:
               schema:
