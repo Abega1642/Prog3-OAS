@@ -3,8 +3,7 @@ info:
   title: Student Course Management API
   version: "1.0.0"
 servers:
-  	- description: SwaggerHub API Auto Mocking
-      url: https://virtserver.swaggerhub.com/HEIABEGA2/student-course_management_api/1.0.0
+    - url: https://virtserver.swaggerhub.com/HEIABEGA2/student-course_management_api/1.0.0
 paths:
   /groups:
     get:
