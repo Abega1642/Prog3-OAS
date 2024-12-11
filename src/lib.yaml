@@ -91,7 +91,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/BookWithAuthor"
+                $ref: "#/components/schemas/book"
 
   /book/delete/{bookId}:
     delete:
@@ -261,31 +261,27 @@ components:
           enum: [M, F]
     book:
       type: object
+      allOf:
+        - $ref: "#/components/schemas/CrupdateBook"
+        - properties:
+            author:
+              allOf:
+                - $ref: "#/components/schemas/author"
+    CrupdateBook:
       properties:
+        ID:
+          type: string
+          example: bk-sc1-phys-028
         bookName:
           type: string
-          example : The mathematical principle of natural philosophy
+          example: The mathematical principle of natural philosophy
         pageNumbers:
           type: integer
           format: int32
           example: 512
         topic:
           type: string
-          enum: [ROMANCE, COMEDY, OTHER]
+          enum: [ ROMANCE, COMEDY, OTHER ]
         releaseDate:
           type: string
           format: date
-    CrupdateBook:
-      allOf:
-          - properties:
-              ID:
-                type: string
-                example: bk-sc1-phys-028
-          - $ref: "#/components/schemas/book"
-    BookWithAuthor:
-      allOf:
-        - $ref: "#/components/schemas/book"
-        - properties:
-            author:
-              allOf:
-                - $ref: "#/components/schemas/author"
