@@ -1,7 +1,7 @@
-openapi: "3.1.0"
+openapi: "3.0.3"
 info:
   title: Library management API
-  version: "1.0.0"
+  version: "1.0.2"
 servers:
   - url: https://localhost
 paths:
