@@ -76,6 +76,7 @@ paths:
                   $ref: "#/components/schemas/book"
         400:
           description: Invalid input data.
+
   /books/{bookId}/authors/{authorId} :
     put:
       operationId: updateBookAuthor
@@ -92,6 +93,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/book"
+
+  /books/authors:
+    put:
+      operationId: linkAuthorAndBook
+      tags:
+        - Books
+      summary: links an book to an author
+      requestBody:
+
 
   /book/delete/{bookId}:
     delete:
@@ -246,19 +256,31 @@ components:
           pattern: ^\d{4}-\d{2}-\d{2};\d{4}-\d{2}-\d{2}$
           example : 1710-11-12;1740-09-30
   schemas:
+    authorId:
+      type: string
+      example: auth-sc1-028
+      nullable: false
+
+    bookId:
+      type: string
+      example: bk-sc1-phys-028
+      nullable: false
+
     author:
       type: object
       properties:
         ID:
           type: string
           example: auth-sc1-028
-          nullable: false
+          allOf:
+            - $ref: "#/components/parameters/authorId"
         Name:
           type: string
           example: Isaac NEWTON
         Sex:
           type: string
-          enum: [M, F]
+          enum: [ M, F ]
+
     book:
       type: object
       allOf:
@@ -267,10 +289,13 @@ components:
             author:
               allOf:
                 - $ref: "#/components/schemas/author"
+
     CrupdateBook:
       properties:
         ID:
           type: string
+          allOf:
+            - $ref: "#/components/parameters/bookId"
           example: bk-sc1-phys-028
         bookName:
           type: string
