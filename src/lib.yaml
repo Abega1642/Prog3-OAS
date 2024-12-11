@@ -1,7 +1,7 @@
-openapi: "3.0.3"
+openapi: "3.1.0"
 info:
   title: Library management API
-  version: "1.0.1"
+  version: "1.0.0"
 servers:
   - url: https://localhost
 paths:
@@ -25,46 +25,18 @@ paths:
                   $ref: "#/components/schemas/book"
         400:
           description: Invalid input data.
-
-  /book/add:
-    post:
-      operationId: addBook
-      tags:
-        - Books
-      summary: add a new book
-      requestBody:
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/book"
-      responses:
-        200:
-          description: book created with success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/book"
-        400:
-          description: Invalid input data.
-
-  /books/update/{bookId}:
+  /books:
     put:
       operationId: delete
       tags:
         - Books
       summary: Update or create a book
-      parameters:
-        - $ref: "#/components/parameters/bookId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/book'
+              $ref: '#/components/schemas/CrupdateBook'
       responses:
         200:
           description: Book updated successfully.
@@ -80,6 +52,56 @@ paths:
                 $ref: '#/components/schemas/book'
         400:
           description: Invalid input data.
+
+    post:
+      operationId: addBook
+      tags:
+        - Books
+      summary: add a new book
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/book"
+      responses:
+        200:
+          description: book created with success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/book"
+        400:
+          description: Invalid input data.
+
+  /books/{bookId}/authors/{authorId} :
+    put:
+      operationId: updateBookAuthor
+      tags:
+        - Books
+      summary: update book's author
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+        - $ref: "#/components/parameters/authorId"
+      responses:
+        200:
+          description: book's author updated with success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/book"
+
+  /books/authors:
+    put:
+      operationId: linkAuthorAndBook
+      tags:
+        - Books
+      summary: links an book to an author
+      requestBody:
+
 
   /book/delete/{bookId}:
     delete:
@@ -104,10 +126,10 @@ paths:
       operationId: getAll
       tags:
         - Authors
-      summary: get all books authors
+      summary: get all authors
       parameters:
-        - $ref: "#/components/parameters/queryPagination"
         - $ref: "#/components/parameters/pathPagination"
+        - $ref: "#/components/parameters/queryPagination"
       responses:
         200:
           description: list of all authors or of a filtered author
@@ -195,6 +217,20 @@ paths:
 
 components:
   parameters:
+    queryPagination:
+      name: queryPagination
+      in: query
+      description: page pagination
+      required: false
+      schema:
+        type: string
+    pathPagination:
+      name: pathPagination
+      in: path
+      description: page pagination
+      required: true
+      schema:
+        type: string
     bookName:
       in: query
       name: bookName
@@ -226,58 +262,66 @@ components:
         example: Isaac Newton
         description: Name of a book's author
     releaseDate:
-        name: releaseDate
-        in: query
-        description: Start and end of release date interval (two values allowed)
-        required: false
-        schema:
-          type: string
-          pattern: ^\d{4}-\d{2}-\d{2};\d{4}-\d{2}-\d{2}$
-          example : 1710-11-12;1740-09-30
-    queryPagination:
-      name: queryPagination
+      name: releaseDate
       in: query
-      description: page pagination
+      description: Start and end of release date interval (two values allowed)
       required: false
       schema:
         type: string
-    pathPagination:
-      name: pathPagination
-      in: path
-      description: page pagination
-      required: true
-      schema:
-        type: string
+        pattern: ^\d{4}-\d{2}-\d{2};\d{4}-\d{2}-\d{2}$
+        example : 1710-11-12;1740-09-30
   schemas:
+    authorId:
+      type: string
+      example: auth-sc1-028
+      nullable: false
+
+    bookId:
+      type: string
+      example: bk-sc1-phys-028
+      nullable: false
+
     author:
       type: object
       properties:
         ID:
           type: string
           example: auth-sc1-028
-          nullable: false
+          allOf:
+            - $ref: "#/components/parameters/authorId"
         Name:
           type: string
           example: Isaac NEWTON
         Sex:
           type: string
-          enum: [M, F]
+          enum: [ M, F ]
+
     book:
       type: object
+      allOf:
+        - $ref: "#/components/schemas/CrupdateBook"
+        - properties:
+            author:
+              allOf:
+                - $ref: "#/components/schemas/author"
+
+    CrupdateBook:
       properties:
         ID:
           type: string
+          allOf:
+            - $ref: "#/components/parameters/bookId"
           example: bk-sc1-phys-028
-          nullable: false
         bookName:
           type: string
-          example : The mathematical principle of natural philosophy
-        author:
-          $ref: "#/components/schemas/author"
+          example: The mathematical principle of natural philosophy
         pageNumbers:
           type: integer
           format: int32
           example: 512
         topic:
           type: string
-          enum: [ROMANCE, COMEDY, OTHER]
+          enum: [ ROMANCE, COMEDY, OTHER ]
+        releaseDate:
+          type: string
+          format: date
