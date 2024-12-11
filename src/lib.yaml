@@ -12,8 +12,8 @@ paths:
         - Books
       summary: get all books available
       parameters:
-        - $ref: "#/components/parameters/bookName"
-        - $ref: "#/components/parameters/releaseDate"
+        - $ref: "#/components/parameters/page"
+        - $ref: "#/components/parameters/pageSize"
       responses:
         200:
           description: list of all books or of a filtered book
@@ -121,14 +121,27 @@ paths:
         400:
           description: Invalid input data.
 
-  /authors:
+  /authors/{page}/{pageSize}:
     get:
       operationId: getAll
       tags:
         - Authors
       summary: get all books authors
       parameters:
-        - $ref: "#/components/parameters/authorName"
+        - in: query
+          name: page
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 1
+        - in: path
+          name: pageSize
+          required: true
+          schema:
+            type: integer
+            format: int64
+            default: 50
       responses:
         200:
           description: list of all authors or of a filtered author
@@ -216,6 +229,22 @@ paths:
 
 components:
   parameters:
+    page:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        format: int64
+        default: 1
+    pageSize:
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        type: integer
+        format: int64
+        default: 50
     bookName:
       in: query
       name: bookName
