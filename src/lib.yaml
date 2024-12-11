@@ -110,10 +110,10 @@ paths:
                 properties:
                   bookId:
                     allOf:
-                      - $ref: "#/components/parameters/bookId"
+                      - $ref: "#/components/schemas/bookId"
                   authorId:
                     allOf:
-                      - $ref: "#/components/parameters/authorId"
+                      - $ref: "#/components/schemas/authorId"
       responses:
         200:
           description: book and author linked successfully
