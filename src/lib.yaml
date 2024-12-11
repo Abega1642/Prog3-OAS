@@ -26,7 +26,33 @@ paths:
         400:
           description: Invalid input data.
 
-  /book/add:
+    put:
+      operationId: delete
+      tags:
+        - Books
+      summary: Update or create a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrupdateBook'
+      responses:
+        200:
+          description: Book updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        201:
+          description: Book created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/book'
+        400:
+          description: Invalid input data.
+
     post:
       operationId: addBook
       tags:
@@ -48,36 +74,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/book"
-        400:
-          description: Invalid input data.
-
-  /books/update/{bookId}:
-    put:
-      operationId: delete
-      tags:
-        - Books
-      summary: Update or create a book
-      parameters:
-        - $ref: "#/components/parameters/bookId"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/book'
-      responses:
-        200:
-          description: Book updated successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/book'
-        201:
-          description: Book created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/book'
         400:
           description: Invalid input data.
 
@@ -250,15 +246,9 @@ components:
     book:
       type: object
       properties:
-        ID:
-          type: string
-          example: bk-sc1-phys-028
-          nullable: false
         bookName:
           type: string
           example : The mathematical principle of natural philosophy
-        author:
-          $ref: "#/components/schemas/author"
         pageNumbers:
           type: integer
           format: int32
@@ -266,3 +256,13 @@ components:
         topic:
           type: string
           enum: [ROMANCE, COMEDY, OTHER]
+        releaseDate:
+          type: string
+          format: date
+    CrupdateBook:
+      allOf:
+          - properties:
+              ID:
+                type: string
+                example: bk-sc1-phys-028
+          - $ref: "#/components/schemas/book"
