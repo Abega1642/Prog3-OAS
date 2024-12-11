@@ -101,6 +101,28 @@ paths:
         - Books
       summary: links an book to an author
       requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  bookId:
+                    allOf:
+                      - $ref: "#/components/schemas/bookId"
+                  authorId:
+                    allOf:
+                      - $ref: "#/components/schemas/authorId"
+      responses:
+        200:
+          description: book and author linked successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/book"
 
 
   /book/delete/{bookId}:
