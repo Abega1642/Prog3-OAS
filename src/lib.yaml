@@ -76,6 +76,22 @@ paths:
                   $ref: "#/components/schemas/book"
         400:
           description: Invalid input data.
+  /books/{bookId}/authors/{authorId} :
+    put:
+      operationId: updateBookAuthor
+      tags:
+        - Books
+      summary: update book's author
+      parameters:
+        - $ref: "#/components/parameters/bookId"
+        - $ref: "#/components/parameters/authorId"
+      responses:
+        200:
+          description: book's author updated with success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookWithAuthor"
 
   /book/delete/{bookId}:
     delete:
@@ -266,3 +282,10 @@ components:
                 type: string
                 example: bk-sc1-phys-028
           - $ref: "#/components/schemas/book"
+    BookWithAuthor:
+      allOf:
+        - $ref: "#/components/schemas/book"
+        - properties:
+            author:
+              allOf:
+                - $ref: "#/components/schemas/author"
